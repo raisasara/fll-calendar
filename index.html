@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FLL UNEARTHED Season Schedule</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background-color: #f9fafb;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            color: #1f2937;
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #6b7280;
+            margin: 5px 0;
+        }
+
+        .qualifier-info {
+            color: #dc2626;
+            font-weight: 600;
+            margin-top: 5px;
+        }
+
+        .venue-info {
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .alert-box {
+            background-color: #fef3c7;
+            border: 2px solid #fcd34d;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .alert-box h3 {
+            color: #1f2937;
+            margin-bottom: 10px;
+        }
+
+        .alert-box p {
+            color: #374151;
+            font-size: 0.875rem;
+            margin: 5px 0;
+        }
+
+        .highlight {
+            color: #dc2626;
+            font-weight: 600;
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .week-card {
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid;
+            transition: all 0.3s;
+        }
+
+        .week-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .week-card.weekend {
+            border-width: 4px;
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 10px;
+        }
+
+        .week-number {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .week-date {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin: 5px 0;
+        }
+
+        .week-duration {
+            font-size: 0.75rem;
+            color: #2563eb;
+            font-weight: 600;
+            margin: 5px 0;
+        }
+
+        .week-title {
+            font-size: 1rem;
+            font-weight: 700;
+            color: #1f2937;
+            margin: 10px 0;
+        }
+
+        .week-focus {
+            font-size: 0.75rem;
+            color: #6b7280;
+            font-style: italic;
+            margin-bottom: 15px;
+        }
+
+        .activities-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0,0,0,0.1);
+        }
+
+        .activities-title {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .activities-list {
+            list-style: none;
+        }
+
+        .activities-list li {
+            display: flex;
+            align-items: start;
+            gap: 8px;
+            margin: 8px 0;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+
+        .checkmark {
+            color: #2563eb;
+            margin-top: 2px;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 40px;
+        }
+
+        .stat-card {
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid;
+        }
+
+        .stat-card h3 {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: #1f2937;
+            margin-bottom: 8px;
+        }
+
+        .stat-card p {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin: 2px 0;
+        }
+
+        .info-box {
+            border: 2px solid;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .info-box h3 {
+            color: #1f2937;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .info-box p, .info-box li {
+            color: #374151;
+            font-size: 0.875rem;
+            margin: 8px 0;
+        }
+
+        .info-box ul {
+            margin-left: 30px;
+        }
+
+        /* Color classes */
+        .blue { background-color: #dbeafe; border-color: #93c5fd; }
+        .purple { background-color: #e9d5ff; border-color: #c4b5fd; }
+        .green { background-color: #d1fae5; border-color: #6ee7b7; }
+        .yellow { background-color: #fef3c7; border-color: #fcd34d; }
+        .orange { background-color: #fed7aa; border-color: #fdba74; }
+        .indigo { background-color: #e0e7ff; border-color: #a5b4fc; }
+        .teal { background-color: #ccfbf1; border-color: #5eead4; }
+        .red { background-color: #fee2e2; border-color: #fca5a5; }
+
+        @media print {
+            .week-card {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📅 FLL UNEARTHED Season Schedule</h1>
+            <p>14 Sessions • 8 Weekday + 6 Weekend • 5 Students</p>
+            <p class="qualifier-info">🏆 FiT East Qualifier: Jan 12-17, 2026</p>
+            <p class="venue-info">Venue: Conroe ISD, 3205 W. Davis St., Conroe, TX 77304</p>
+        </div>
+
+        <div class="alert-box">
+            <h3>⚠️ Schedule Updates - Conroe ISD Calendar</h3>
+            <p><strong>Start Date:</strong> Wednesday, October 15, 2025 (after Oct 10-13 holiday)</p>
+            <p><strong>Wednesday Sessions:</strong> 45 minutes when school is in session</p>
+            <p><strong>Weekend Intensives:</strong> Extended sessions to maximize preparation</p>
+            <p class="highlight">• Sat Nov 22 (90 min) - Sensors & building</p>
+            <p class="highlight">• Sat Dec 20 (90 min) - Prototype build (before break)</p>
+            <p class="highlight">• Mon Jan 5 (90 min) - Back from break integration</p>
+            <p class="highlight">• Sat Jan 10 (2 hrs) - Mock Competition</p>
+            <p class="highlight">• Sat Jan 11 (2 hrs) - Final Prep Day</p>
+            <p style="margin-top: 10px;"><strong>Conroe ISD Holidays (No Sessions):</strong></p>
+            <p>• Oct 10-13 (Fall Break) • Nov 3-4 • Nov 24-28 (Thanksgiving)</p>
+            <p>• Dec 22-Jan 4 (Winter Break) • Jan 19 (MLK Day - but competition week!)</p>
+        </div>
+
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <div class="stats-grid">
+            <div class="stat-card blue">
+                <h3>📅 Weekday Sessions</h3>
+                <p>8 sessions × 45-90 min</p>
+                <small>Oct 15 - Jan 7</small>
+            </div>
+            <div class="stat-card indigo" style="border-width: 2px;">
+                <h3>⏰ Weekend Intensives</h3>
+                <p>6 sessions (90-120 min)</p>
+                <small>Nov 22, Dec 20, Jan 5, 10, 11</small>
+            </div>
+            <div class="stat-card red" style="border-width: 2px;">
+                <h3>🏆 Mock Competition</h3>
+                <p>1 full simulation</p>
+                <small>Sat Jan 10, 2026</small>
+            </div>
+            <div class="stat-card green" style="border-width: 2px;">
+                <h3>🏆 Competition Week</h3>
+                <p><strong>Jan 12-17, 2026</strong></p>
+                <small>FiT East Qualifier</small>
+            </div>
+        </div>
+
+        <div class="info-box orange">
+            <h3>🔄 Role Rotation & Timeline</h3>
+            <p><strong>Weeks 1-7 (Oct 15 - Nov 22):</strong> Initial groups (Build/Code vs Research)</p>
+            <p><strong>Week 8 (Dec 10):</strong> Groups switch roles - everyone learns both areas</p>
+            <p><strong>Weeks 11-14 (Jan 5-11):</strong> Full team integration - everyone does everything</p>
+            <p class="highlight" style="margin-top: 10px;"><strong>Jan 12-17:</strong> FiT East FLLC Qualifier at Conroe ISD</p>
+        </div>
+
+        <div class="info-box blue">
+            <h3>📋 Important Notes for Parents</h3>
+            <p>• <strong>Competition Details:</strong> FiT East FLLC Qualifier, Jan 12-17, 2026 (Conroe ISD teams only)</p>
+            <p>• <strong>Advancement:</strong> Top teams advance to East Texas Area Tournament in February</p>
+            <p>• Weekend sessions are CRITICAL - please mark calendars now</p>
+            <p>• Winter break means we lose practice time - extra weekend sessions compensate</p>
+            <p>• Final two Saturdays (Jan 10 & 11) are mandatory for competition readiness</p>
+            <p>• Consider carpooling for weekend sessions</p>
+            <p>• Homework between sessions maximizes our limited time</p>
+        </div>
+
+        <div class="info-box purple">
+            <h3>🎯 Competition Day Checklist</h3>
+            <p><strong>What to Bring:</strong></p>
+            <ul>
+                <li>Robot + all attachments (organized container)</li>
+                <li>Charged tablet + charger + backup battery</li>
+                <li>SPIKE Prime set for repairs</li>
+                <li>Innovation project prototype/model</li>
+                <li>Presentation materials & visual aids</li>
+                <li>Team spirit items (matching shirts recommended)</li>
+                <li>Snacks, water, positive attitude!</li>
+            </ul>
+            <p style="margin-top: 15px;"><strong>Competition Components:</strong> Innovation Project • Robot Design • Core Values • Robot Game (3 rounds)</p>
+        </div>
+    </div>
+
+    <script>
+        const weeks = [
+            {
+                week: 1,
+                date: "Wed Oct 15, 2025",
+                duration: "45 min",
+                title: "Introduction & Team Building",
+                focus: "Team Formation",
+                activities: ["Watch FLL videos", "Choose team name", "Explore SPIKE Prime", "Discuss UNEARTHED theme basics"],
+                color: "blue",
+                isWeekend: false
+            },
+            {
+                week: 2,
+                date: "Wed Oct 22, 2025",
+                duration: "45 min",
+                title: "Core Values & Theme Dive",
+                focus: "UNEARTHED Theme",
+                activities: ["Team agreement", "Explore archaeology/history", "Basic robot intro", "Unpack game mat"],
+                color: "purple",
+                isWeekend: false
+            },
+            {
+                week: 3,
+                date: "Wed Oct 29, 2025",
+                duration: "45 min",
+                title: "Missions & Problem Selection",
+                focus: "Split Groups Start",
+                activities: ["Identify 3 easy missions", "Choose innovation problem", "Start robot base build"],
+                color: "green",
+                isWeekend: false
+            },
+            {
+                week: 4,
+                date: "Wed Nov 5, 2025",
+                duration: "45 min",
+                title: "Robot Basics & Project Definition",
+                focus: "Foundation Skills",
+                activities: ["Drive straight programming", "Problem statement", "Expert interview list"],
+                color: "yellow",
+                isWeekend: false
+            },
+            {
+                week: 5,
+                date: "Wed Nov 12, 2025",
+                duration: "45 min",
+                title: "Turning & Initial Research",
+                focus: "Skills Development",
+                activities: ["90-degree turns", "Interview prep", "First mission attempt"],
+                color: "yellow",
+                isWeekend: false
+            },
+            {
+                week: 6,
+                date: "Wed Nov 19, 2025",
+                duration: "45 min",
+                title: "Strategy & Solution Brainstorm",
+                focus: "Planning Phase",
+                activities: ["Plan 2-3 mission sequence", "Brainstorm innovation solutions", "Share interview findings"],
+                color: "purple",
+                isWeekend: false
+            },
+            {
+                week: 7,
+                date: "Sat Nov 22, 2025",
+                duration: "90 min",
+                title: "WEEKEND INTENSIVE - Sensors & Building",
+                focus: "🎯 Extended Session",
+                activities: ["Learn color/distance sensors", "Build robot attachments", "Extended practice time", "Select innovation solution"],
+                color: "indigo",
+                isWeekend: true
+            },
+            {
+                week: 8,
+                date: "Wed Dec 10, 2025",
+                duration: "45 min",
+                title: "ROTATION - Groups Switch",
+                focus: "🔄 Switch Roles",
+                activities: ["Students rotate to new roles", "Sensors in missions", "Innovation prototype planning"],
+                color: "orange",
+                isWeekend: false
+            },
+            {
+                week: 9,
+                date: "Wed Dec 17, 2025",
+                duration: "45 min",
+                title: "Attachments & Presentation Draft",
+                focus: "Advanced Skills",
+                activities: ["Test mission attachments", "Start innovation presentation", "Time trials"],
+                color: "yellow",
+                isWeekend: false
+            },
+            {
+                week: 10,
+                date: "Sat Dec 20, 2025",
+                duration: "90 min",
+                title: "WEEKEND INTENSIVE - Prototype Build",
+                focus: "🎯 Extended Session",
+                activities: ["Build innovation prototype", "Mission sequence practice", "Create visual aids for presentation"],
+                color: "indigo",
+                isWeekend: true
+            },
+            {
+                week: 11,
+                date: "Mon Jan 5, 2026",
+                duration: "90 min",
+                title: "Back from Break - Full Integration",
+                focus: "Everyone Learns All",
+                activities: ["Review everything", "All students drive robot", "All students practice presentation", "Strategy refinement"],
+                color: "blue",
+                isWeekend: false
+            },
+            {
+                week: 12,
+                date: "Wed Jan 7, 2026",
+                duration: "45 min",
+                title: "Optimization & Polish",
+                focus: "Refinement",
+                activities: ["Debug mission reliability", "Polish presentation delivery", "Robot design documentation"],
+                color: "teal",
+                isWeekend: false
+            },
+            {
+                week: 13,
+                date: "Sat Jan 10, 2026",
+                duration: "2 hours",
+                title: "MOCK COMPETITION - Full Simulation",
+                focus: "🏆 Practice Run",
+                activities: ["Setup like real competition", "3 robot rounds (2.5 min each)", "Innovation presentation (5 min)", "Robot design explanation", "Core Values practice", "Team debrief - create improvement list"],
+                color: "red",
+                isWeekend: true
+            },
+            {
+                week: 14,
+                date: "Sat Jan 11, 2026",
+                duration: "2 hours",
+                title: "FINAL PREP & COMPETITION READY",
+                focus: "🏆 Last Practice",
+                activities: ["Address mock competition gaps", "Final run-throughs", "Review competition schedule & venue", "Pack everything", "Team pep talk & celebration"],
+                color: "red",
+                isWeekend: true
+            }
+        ];
+
+        function renderCalendar() {
+            const grid = document.getElementById('calendarGrid');
+            
+            weeks.forEach(week => {
+                const card = document.createElement('div');
+                card.className = `week-card ${week.color} ${week.isWeekend ? 'weekend' : ''}`;
+                
+                card.innerHTML = `
+                    <div class="week-header">
+                        <div class="week-number">${week.isWeekend ? '🎯 ' : ''}Week ${week.week}</div>
+                    </div>
+                    <div class="week-date">${week.date}</div>
+                    <div class="week-duration">${week.duration}</div>
+                    <div class="week-title">${week.title}</div>
+                    <div class="week-focus">${week.focus}</div>
+                    <div class="activities-section">
+                        <div class="activities-title">Session Activities:</div>
+                        <ul class="activities-list">
+                            ${week.activities.map(activity => `
+                                <li>
+                                    <span class="checkmark">✓</span>
+                                    <span>${activity}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                    </div>
+                `;
+                
+                grid.appendChild(card);
+            });
+        }
+
+        renderCalendar();
+    </script>
+</body>
+</html>
